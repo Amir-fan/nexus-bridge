@@ -1,0 +1,142 @@
+.footer {
+  position: relative;
+  overflow: hidden;
+  background: var(--white);
+  padding: 5rem 0 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 320px;
+}
+
+.footer__logo {
+  height: 42px;
+  width: auto;
+  filter: invert(1); /* Assuming original is white, we invert to dark */
+}
+
+.footer__tagline {
+  color: var(--silver-500);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.footer__nav {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.footer__col-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--green-900);
+  margin-bottom: 1.5rem;
+}
+
+.footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer__col a {
+  color: var(--silver-500);
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.footer__col a:hover {
+  color: var(--green-600);
+}
+
+.footer__contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--silver-500) !important;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.footer__contact-link:hover {
+  color: var(--green-600) !important;
+}
+
+.footer__address {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: var(--silver-500);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+  position: relative;
+  z-index: 1;
+}
+
+.footer__copy {
+  color: var(--silver-400);
+  font-size: 0.85rem;
+}
+
+.footer__legal {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer__legal a {
+  color: var(--silver-400);
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.footer__legal a:hover {
+  color: var(--green-600);
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 900px) {
+  .footer__top {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer__nav {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+}
