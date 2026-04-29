@@ -1,6 +1,6 @@
 import { useReveal } from '../hooks/useReveal'
 import { NavLink } from 'react-router-dom'
-import { Target, Shield, Lightbulb, Globe, ArrowRight, Quote } from 'lucide-react'
+import { Target, Shield, Lightbulb, ArrowRight, Quote, Activity, CheckCircle2 } from 'lucide-react'
 import './About.css'
 
 const milestones = [
@@ -15,11 +15,6 @@ const milestones = [
     body: 'Durch die Kombination von medizinischem Fachwissen und Expertise in Prozessoptimierung stellten wir erste erfolgreiche Vermittlungen sicher.',
   },
   {
-    year: '2025',
-    title: 'Internationales Netzwerk',
-    body: 'Aufbau enger Partnerschaften mit führenden Kliniken im arabischen Golf und weiteren internationalen Einrichtungen.',
-  },
-  {
     year: 'Heute',
     title: 'Wachsende Plattform',
     body: 'Unsere Plattform bringt medizinisches Fachpersonal und Gesundheitseinrichtungen direkt zusammen und setzt neue Maßstäbe in Effizienz und Qualität.',
@@ -27,13 +22,21 @@ const milestones = [
 ]
 
 const values = [
-  { icon: <Target size={22} color="var(--green-300)" />, title: 'Präzision', body: 'Wir finden nicht irgendeine Fachkraft – sondern genau die richtige.' },
-  { icon: <Shield size={22} color="var(--green-300)" />, title: 'Verlässlichkeit', body: 'Unser Wort gilt. Maßgeschneiderte Lösungen, auf die Sie sich verlassen können.' },
-  { icon: <Lightbulb size={22} color="var(--green-300)" />, title: 'Innovation', body: 'Wir denken Personalvermittlung neu – effizienter, transparenter und moderner.' },
-  { icon: <Globe size={22} color="var(--green-300)" />, title: 'Internationalität', body: 'National verwurzelt, weltweit vernetzt. Für Ihren Einsatz wo auch immer.' },
+  { icon: <Target size={22} color="var(--green-600)" />, title: 'Präzision', body: 'Wir finden nicht irgendeine Fachkraft – sondern genau die richtige.' },
+  { icon: <Shield size={22} color="var(--green-600)" />, title: 'Verlässlichkeit', body: 'Unser Wort gilt. Maßgeschneiderte Lösungen, auf die Sie sich verlassen können.' },
+  { icon: <Lightbulb size={22} color="var(--green-600)" />, title: 'Innovation', body: 'Wir denken Personalvermittlung neu – effizienter, transparenter und moderner.' },
 ]
 
-const WHO_IMAGE = 'https://images.unsplash.com/photo-1584467735815-f778f274e296?auto=format&fit=crop&w=760&q=80'
+const preventionBenefits = [
+  'Regelmäßige Gesundheitschecks direkt im Unternehmen',
+  'Frühzeitige Erkennung von Gesundheitsrisiken',
+  'Nachhaltige Senkung krankheitsbedingter Ausfallzeiten',
+  'Stärkung der Mitarbeiterbindung durch Fürsorge',
+  'Individuell angepasste Vorsorgekonzepte',
+]
+
+const WHO_IMAGE = 'https://images.pexels.com/photos/5452293/pexels-photo-5452293.jpeg?auto=compress&cs=tinysrgb&w=760&q=80&fit=crop'
+const PREVENTION_IMAGE = 'https://images.pexels.com/photos/8376235/pexels-photo-8376235.jpeg?auto=compress&cs=tinysrgb&w=760&q=80&fit=crop'
 
 export default function About() {
   useReveal()
@@ -79,15 +82,74 @@ export default function About() {
             <div className="about-who__img-frame">
               <img src={WHO_IMAGE} alt="Medizinisches Team" className="about-who__img" />
             </div>
-            <div className="about-who__quote card">
-              <Quote size={20} color="var(--green-400)" style={{ flexShrink: 0 }} />
-              <p className="body-sm about-who__quote-text">
+          </div>
+        </div>
+
+        {/* Quotes row — full width below the split */}
+        <div className="container about-quotes reveal">
+          <div className="about-quotes__grid">
+            <div className="about-quote-card card">
+              <Quote size={20} color="var(--green-600)" style={{ flexShrink: 0 }} />
+              <p className="body-sm about-quote-card__text">
                 Unser Anspruch ist es, die Personalvermittlung im Gesundheitswesen nachhaltig zu
                 verbessern und für alle Beteiligten einen echten Mehrwert zu schaffen.
               </p>
-              <div className="about-who__quote-author">
-                <div className="about-who__quote-dot" />
+              <div className="about-quote-card__author">
+                <div className="about-quote-card__dot" />
                 <span>Louis Alwani, Gründer</span>
+              </div>
+            </div>
+            <div className="about-quote-card card">
+              <Quote size={20} color="var(--green-600)" style={{ flexShrink: 0 }} />
+              <p className="body-sm about-quote-card__text">
+                Präventionsmedizin ist keine Kostenstelle – sie ist die beste Investition,
+                die ein Unternehmen in seine Mitarbeitenden treffen kann.
+              </p>
+              <div className="about-quote-card__author">
+                <div className="about-quote-card__dot" />
+                <span>Tim Schamel, Gründer &amp; Arzt</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRÄVENTIONSMEDIZIN ── */}
+      <section className="section about-prevention">
+        <div className="container about-prevention__inner">
+          <div className="about-prevention__text reveal--left">
+            <div className="section-label">Unser Fokus</div>
+            <h2 className="display-3">
+              Präventionsmedizin —<br />
+              <span className="text-accent">Gesundheit aktiv gestalten</span>
+            </h2>
+            <div className="accent-line" />
+            <p className="body-lg about-prevention__body">
+              Wir entsenden qualifizierte Ärzte direkt zu Ihrem Unternehmen — für regelmäßige
+              Gesundheitschecks und Vorsorgeuntersuchungen Ihrer Mitarbeitenden. So reduzieren Sie
+              krankheitsbedingte Ausfälle nachhaltig und zeigen echte Fürsorge für Ihr Team.
+            </p>
+            <ul className="about-prevention__list">
+              {preventionBenefits.map((item, i) => (
+                <li key={i} className="about-prevention__list-item">
+                  <CheckCircle2 size={16} color="var(--green-600)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <NavLink to="/kontakt" className="btn btn--primary" style={{ marginTop: '2rem', alignSelf: 'flex-start' }}>
+              Jetzt anfragen <ArrowRight size={16} />
+            </NavLink>
+          </div>
+          <div className="about-prevention__visual reveal--right">
+            <div className="about-prevention__img-frame">
+              <img src={PREVENTION_IMAGE} alt="Präventionsmedizin beim Unternehmen" className="about-prevention__img" />
+            </div>
+            <div className="about-prevention__stat card">
+              <Activity size={22} color="var(--green-600)" />
+              <div>
+                <p className="about-prevention__stat-num">−30%</p>
+                <p className="about-prevention__stat-sub">weniger Krankheitsausfälle</p>
               </div>
             </div>
           </div>
@@ -102,7 +164,7 @@ export default function About() {
             <h2 className="display-3">Was uns antreibt</h2>
             <div className="accent-line" />
           </div>
-          <div className="about-values__grid">
+          <div className="about-values__grid about-values__grid--3">
             {values.map((v, i) => (
               <div key={i} className={`about-value card reveal reveal-delay-${i + 1}`}>
                 <div className="about-value__icon-wrap">{v.icon}</div>

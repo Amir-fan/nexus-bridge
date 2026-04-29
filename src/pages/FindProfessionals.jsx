@@ -5,23 +5,23 @@ import './FindProfessionals.css'
 
 const services = [
   {
-    icon: <Search size={22} color="var(--green-300)" />,
-    title: 'Rekrutierung & Qualifikationsprüfung',
+    icon: <Search size={22} color="var(--green-600)" />,
+    title: 'Rekrutierung &amp; Qualifikationsprüfung',
     body: 'Prüfung und Auswahl qualifizierter Fachkräfte, um sicherzustellen, dass sie den Anforderungen der jeweiligen medizinischen Einrichtungen entsprechen.',
   },
   {
-    icon: <FileText size={22} color="var(--green-300)" />,
+    icon: <FileText size={22} color="var(--green-600)" />,
     title: 'Organisation von Arbeitsgenehmigungen',
     body: 'Unterstützung bei der Beschaffung von Visa, Arbeitsgenehmigungen und anderen notwendigen Dokumenten.',
   },
   {
-    icon: <Users size={22} color="var(--green-300)" />,
-    title: 'Integration & Einarbeitung',
+    icon: <Users size={22} color="var(--green-600)" />,
+    title: 'Integration &amp; Einarbeitung',
     body: 'Unterstützung der Fachkräfte bei der Integration in das neue Arbeitsumfeld, einschließlich kultureller Anpassung und Einarbeitungsprogramme.',
   },
   {
-    icon: <MessageCircle size={22} color="var(--green-300)" />,
-    title: 'Beratung & Nachbetreuung',
+    icon: <MessageCircle size={22} color="var(--green-600)" />,
+    title: 'Beratung &amp; Nachbetreuung',
     body: 'Fortlaufende Unterstützung und Betreuung nach der Vermittlung, um eine nachhaltige Zufriedenheit und erfolgreiche Zusammenarbeit zu gewährleisten.',
   },
 ]
@@ -39,14 +39,6 @@ const profiles = [
     cat: 'Medizinische Fachkraft',
     items: ['Fachgesundheits- und Krankenpflegekräfte (Anästhesie & Intensivpflege)', 'Fachpflegekräfte im Operationsdienst', 'OTAs, MTAs, MTLAs, MTRAs', 'Hebammen'],
   },
-]
-
-const immigration = [
-  { step: '01', title: 'Qualifikationsprüfung', body: 'Wir stellen sicher, dass die medizinischen Abschlüsse den Anforderungen des Ziellandes entsprechen und anerkannt werden.' },
-  { step: '02', title: 'Beschaffung von Dokumenten', body: 'Wir unterstützen beim Sammeln und Beglaubigen aller notwendigen Unterlagen wie Diplome, Arbeitszeugnisse, Sprachzertifikate.' },
-  { step: '03', title: 'Beantragung der Arbeitsgenehmigung', body: 'Wir helfen bei der Einreichung von Anträgen bei den zuständigen Einwanderungsbehörden.' },
-  { step: '04', title: 'Länderspezifische Anforderungen', body: 'Wir vermitteln Kurse für zusätzliche Prüfungen oder Anpassungskurse, die von manchen Ländern verlangt werden.' },
-  { step: '05', title: 'Planung der Einreise', body: 'Wir planen mit den Fachkräften die Einreise und den Arbeitsbeginn unter Berücksichtigung aller rechtlichen Anforderungen.' },
 ]
 
 const PAGE_IMAGE = 'https://images.pexels.com/photos/4173239/pexels-photo-4173239.jpeg?auto=compress&cs=tinysrgb&w=900&h=640&fit=crop'
@@ -116,37 +108,11 @@ export default function FindProfessionals() {
                 <ul className="fp-profile-card__list">
                   {p.items.map((item, j) => (
                     <li key={j}>
-                      <CheckCircle2 size={14} color="var(--green-300)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                      <CheckCircle2 size={14} color="var(--green-600)" style={{ flexShrink: 0, marginTop: '2px' }} />
                       {item}
                     </li>
                   ))}
                 </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── EINWANDERUNGSSERVICE ── */}
-      <section className="section fp-immigration">
-        <div className="fp-immigration__bg" />
-        <div className="container">
-          <div className="reveal">
-            <div className="section-label">Einwanderungsservice</div>
-            <h2 className="display-3">Internationale Fachkräfte <span className="text-accent">reibungslos integrieren</span></h2>
-            <div className="accent-line" />
-            <p className="body-lg fp-immigration__intro">
-              Folgende Leistungen bieten wir an und unterstützen bei der Vermittlung von Fachkräften aus dem Ausland:
-            </p>
-          </div>
-          <div className="fp-immigration__steps">
-            {immigration.map((item, i) => (
-              <div key={i} className={`fp-immigration__step reveal reveal-delay-${(i % 3) + 1}`}>
-                <div className="fp-immigration__step-num">{item.step}</div>
-                <div className="fp-immigration__step-body">
-                  <h3 className="heading-1">{item.title}</h3>
-                  <p className="body-sm" style={{ marginTop: '0.5rem' }}>{item.body}</p>
-                </div>
               </div>
             ))}
           </div>

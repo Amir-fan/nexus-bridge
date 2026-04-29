@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="footer__top">
           <div className="footer__brand">
             <NavLink to="/">
-              <img src="/logo.png" alt="Nexusbridge Medical Logo" className="footer__logo" />
+              <img src="images/image-160x109.png" alt="Nexusbridge Medical Logo" className="footer__logo" />
             </NavLink>
             <p className="footer__tagline">
               Medizinische Fachkräfte weltweit verfügbar machen.

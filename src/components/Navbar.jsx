@@ -41,7 +41,7 @@ export default function Navbar() {
         <div className="container navbar__inner">
           
           <NavLink to="/" className="navbar__brand">
-            <img src="/logo.png" alt="Nexusbridge Medical Logo" className="navbar__logo" />
+            <img src="images/image-160x109.png" alt="Nexusbridge Medical Logo" className="navbar__logo" />
           </NavLink>
 
           <div className="navbar__desktop">

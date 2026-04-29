@@ -114,51 +114,6 @@
   line-height: 1.6;
 }
 
-/* Immigration */
-
-.fp-immigration {
-  position: relative;
-  overflow: hidden;
-  background: var(--white);
-}
-
-.fp-immigration__intro {
-  max-width: 640px;
-  margin-top: 1.5rem;
-  margin-bottom: 3.5rem;
-}
-
-.fp-immigration__steps {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.fp-immigration__step {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 2rem;
-  align-items: center;
-}
-
-.fp-immigration__step-num {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  font-weight: 800;
-  color: var(--green-700);
-  background: var(--color-accent-light);
-  border-radius: var(--radius-lg);
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fp-immigration__step-body {
-  padding: 1.5rem 0 1.5rem 2rem;
-  border-left: 2px solid var(--color-border);
-}
-
 /* CTA */
 
 .fp-cta {
@@ -221,23 +176,6 @@
 }
 
 @media (max-width: 600px) {
-  .fp-immigration__step {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .fp-immigration__step-num {
-    height: 60px;
-    width: 60px;
-    border-radius: var(--radius-full);
-  }
-
-  .fp-immigration__step-body {
-    padding: 1rem 0 0 0;
-    border-left: none;
-    border-top: 1px solid var(--color-border);
-  }
-
   .fp-cta {
     padding: 2.5rem;
   }

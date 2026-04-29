@@ -12,6 +12,8 @@ import {
   BadgeCheck,
   Calendar,
   Search,
+  Activity,
+  CheckCircle2,
 } from 'lucide-react'
 import './Home.css'
 
@@ -19,7 +21,49 @@ const IMAGES = {
   hero: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=900&h=1100&fit=crop',
   about: 'https://images.pexels.com/photos/3844581/pexels-photo-3844581.jpeg?auto=compress&cs=tinysrgb&w=760&h=920&fit=crop',
   gulf: 'https://images.pexels.com/photos/3826678/pexels-photo-3826678.jpeg?auto=compress&cs=tinysrgb&w=760&h=840&fit=crop',
+  prevention: 'https://images.pexels.com/photos/8376235/pexels-photo-8376235.jpeg?auto=compress&cs=tinysrgb&w=760&h=600&fit=crop',
 }
+
+// Team — swap src values with real headshots when provided
+const TEAM = [
+  {
+    name: 'Louis Alwani',
+    role: 'Gründer',
+    photo: 'images/Louis Alwani.jpeg',
+    bio: 'Visionär und Stratege. Louis bringt tiefes Verständnis für den Personalmarkt mit und leitet die strategische Ausrichtung von Nexusbridge, um Gesundheitseinrichtungen und Fachkräfte optimal zu vernetzen.'
+  },
+  {
+    name: 'Sabine Weigand',
+    role: 'Finanz- und Verwaltungsleiterin',
+    photo: 'images/Sabine Weigand.jpeg',
+    bio: 'Das Rückgrat des Unternehmens. Sabine sorgt für reibungslose finanzielle und administrative Abläufe und schafft so die Basis für das nachhaltige Wachstum von Nexusbridge.'
+  },
+  {
+    name: 'Nada Alwani',
+    role: 'Human Resources',
+    photo: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop',
+    bio: 'Expertin für Menschen. Nada begleitet unsere Fachkräfte vom ersten Kontakt bis zur erfolgreichen Integration und sorgt für höchste Zufriedenheit auf allen Seiten.'
+  },
+  {
+    name: 'Tim Schamel',
+    role: 'Gründer & Arzt',
+    photo: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop',
+    bio: 'Aus der Praxis, für die Praxis. Als Arzt kennt Tim die Herausforderungen im Klinikalltag genau und stellt sicher, dass unsere Vermittlungs- und Präventionskonzepte höchsten medizinischen Ansprüchen genügen.'
+  },
+  {
+    name: 'Wolfgang Lezuo',
+    role: 'Arzt',
+    photo: 'https://images.pexels.com/photos/582750/pexels-photo-582750.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop',
+    bio: 'Medizinische Exzellenz. Wolfgang unterstützt mit seiner weitreichenden Expertise in der ärztlichen Versorgung und Qualitätssicherung unserer Präventionsprogramme.'
+  },
+]
+
+const PREVENTION_POINTS = [
+  'Ärzte kommen direkt zu Ihrem Unternehmen',
+  'Individuelle Gesundheitschecks & Vorsorgeuntersuchungen',
+  'Nachhaltige Senkung von Krankheitsausfällen',
+  'Stärkung der Mitarbeiterbindung durch aktive Fürsorge',
+]
 
 export default function Home() {
   useReveal()
@@ -239,6 +283,48 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─────────────── PRÄVENTIONSMEDIZIN ─────────────── */}
+      <section className="prevention section">
+        <div className="container prevention__inner">
+          <div className="prevention__text reveal--left">
+            <div className="section-label">Präventionsmedizin</div>
+            <h2 className="display-3">
+              Gesundheit im Unternehmen —{' '}
+              <span className="text-accent">aktiv schützen</span>
+            </h2>
+            <div className="accent-line" />
+            <p className="body-lg prevention__body">
+              Wir entsenden qualifizierte Ärzte direkt zu Ihrem Unternehmen. Durch regelmäßige
+              Vorsorgeuntersuchungen Ihrer Mitarbeitenden senken Sie krankheitsbedingte Ausfälle
+              nachhaltig — und zeigen echte Fürsorge für Ihr Team.
+            </p>
+            <ul className="prevention__list">
+              {PREVENTION_POINTS.map((item, i) => (
+                <li key={i} className="prevention__list-item">
+                  <CheckCircle2 size={16} color="var(--green-600)" style={{ flexShrink: 0 }} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <NavLink to="/kontakt" className="btn btn--primary prevention__cta">
+              Jetzt anfragen <ArrowRight size={16} />
+            </NavLink>
+          </div>
+          <div className="prevention__visual reveal--right">
+            <div className="prevention__img-frame">
+              <img src={IMAGES.prevention} alt="Betriebliche Gesundheitsvorsorge" className="prevention__img" />
+            </div>
+            <div className="prevention__stat card">
+              <Activity size={22} color="var(--green-600)" />
+              <div>
+                <p className="prevention__stat-num">−30%</p>
+                <p className="prevention__stat-sub">weniger Krankheitsausfälle</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─────────────── PROCESS ─────────────── */}
       <section className="process section">
         <div className="container">
@@ -276,6 +362,38 @@ export default function Home() {
                 </div>
                 <h3 className="heading-1 process__step-title">{s.title}</h3>
                 <p className="body-sm process__step-body">{s.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────── TEAM ─────────────── */}
+      <section className="team-section section">
+        <div className="container">
+          <div className="team-section__header reveal">
+            <div className="section-label">Unser Team</div>
+            <h2 className="display-2">
+              Die Menschen hinter <span className="text-accent">Nexusbridge</span>
+            </h2>
+          </div>
+          <div className="team-section__grid">
+            {TEAM.map((member, i) => (
+              <div key={i} className={`team-card reveal reveal-delay-${i + 1}`}>
+                <div className="team-card__photo-wrap">
+                  <img src={member.photo} alt={member.name} className="team-card__photo" />
+                </div>
+                <div className="team-card__info">
+                  <h3 className="team-card__name">{member.name}</h3>
+                  <p className="team-card__role">{member.role}</p>
+                </div>
+                
+                {/* Hover overlay */}
+                <div className="team-card__overlay">
+                  <h3 className="team-card__overlay-name">{member.name}</h3>
+                  <p className="team-card__overlay-role">{member.role}</p>
+                  <p className="team-card__overlay-bio">{member.bio}</p>
+                </div>
               </div>
             ))}
           </div>
