@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useReveal } from '../hooks/useReveal'
+import { client, urlFor } from '../lib/sanity'
 import {
   Stethoscope,
   Globe,
@@ -14,49 +15,29 @@ import {
   Search,
   Activity,
   CheckCircle2,
+  ShieldCheck,
+  TrendingUp,
 } from 'lucide-react'
+import SEO from '../components/SEO'
 import './Home.css'
 
+const iconMap = {
+  Stethoscope: <Stethoscope size={24} color="var(--green-500)" />,
+  Globe: <Globe size={24} color="var(--green-500)" />,
+  Building2: <Building2 size={24} color="var(--green-500)" />,
+  Users: <Users size={24} color="var(--green-500)" />,
+  ClipboardCheck: <ClipboardCheck size={24} color="var(--green-500)" />,
+  BadgeCheck: <BadgeCheck size={24} color="var(--green-500)" />,
+  ShieldCheck: <ShieldCheck size={24} color="var(--green-500)" />,
+  TrendingUp: <TrendingUp size={24} color="var(--green-500)" />,
+}
+
 const IMAGES = {
-  hero: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=900&h=1100&fit=crop',
+  hero: 'https://images.pexels.com/photos/5214959/pexels-photo-5214959.jpeg?auto=compress&cs=tinysrgb&w=900&h=1100&fit=crop',
   about: 'https://images.pexels.com/photos/3844581/pexels-photo-3844581.jpeg?auto=compress&cs=tinysrgb&w=760&h=920&fit=crop',
   gulf: 'https://images.pexels.com/photos/3826678/pexels-photo-3826678.jpeg?auto=compress&cs=tinysrgb&w=760&h=840&fit=crop',
   prevention: 'https://images.pexels.com/photos/8376235/pexels-photo-8376235.jpeg?auto=compress&cs=tinysrgb&w=760&h=600&fit=crop',
 }
-
-// Team — swap src values with real headshots when provided
-const TEAM = [
-  {
-    name: 'Louis Alwani',
-    role: 'Gründer',
-    photo: 'images/Louis Alwani.jpeg',
-    bio: 'Visionär und Stratege. Louis bringt tiefes Verständnis für den Personalmarkt mit und leitet die strategische Ausrichtung von Nexusbridge, um Gesundheitseinrichtungen und Fachkräfte optimal zu vernetzen.'
-  },
-  {
-    name: 'Sabine Weigand',
-    role: 'Finanz- und Verwaltungsleiterin',
-    photo: 'images/Sabine Weigand.jpeg',
-    bio: 'Das Rückgrat des Unternehmens. Sabine sorgt für reibungslose finanzielle und administrative Abläufe und schafft so die Basis für das nachhaltige Wachstum von Nexusbridge.'
-  },
-  {
-    name: 'Nada Alwani',
-    role: 'Human Resources',
-    photo: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop',
-    bio: 'Expertin für Menschen. Nada begleitet unsere Fachkräfte vom ersten Kontakt bis zur erfolgreichen Integration und sorgt für höchste Zufriedenheit auf allen Seiten.'
-  },
-  {
-    name: 'Tim Schamel',
-    role: 'Gründer & Arzt',
-    photo: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop',
-    bio: 'Aus der Praxis, für die Praxis. Als Arzt kennt Tim die Herausforderungen im Klinikalltag genau und stellt sicher, dass unsere Vermittlungs- und Präventionskonzepte höchsten medizinischen Ansprüchen genügen.'
-  },
-  {
-    name: 'Wolfgang Lezuo',
-    role: 'Arzt',
-    photo: 'https://images.pexels.com/photos/582750/pexels-photo-582750.jpeg?auto=compress&cs=tinysrgb&w=600&h=800&fit=crop',
-    bio: 'Medizinische Exzellenz. Wolfgang unterstützt mit seiner weitreichenden Expertise in der ärztlichen Versorgung und Qualitätssicherung unserer Präventionsprogramme.'
-  },
-]
 
 const PREVENTION_POINTS = [
   'Ärzte kommen direkt zu Ihrem Unternehmen',
@@ -67,9 +48,54 @@ const PREVENTION_POINTS = [
 
 export default function Home() {
   useReveal()
+  const [hero, setHero] = useState(null)
+  const [homeData, setHomeData] = useState(null)
+  const [services, setServices] = useState([])
+  const [team, setTeam] = useState([])
+  const [steps, setSteps] = useState([])
+  const [settings, setSettings] = useState(null)
+
+  useEffect(() => {
+    // Fetch Hero
+    client.fetch('*[_type == "hero"][0]').then(setHero)
+    // Fetch HomePage Zusatz
+    client.fetch('*[_type == "homePage"][0]').then(setHomeData)
+    // Fetch Services
+    client.fetch('*[_type == "service"]').then(setServices)
+    // Fetch Steps
+    client.fetch('*[_type == "processStep"] | order(number asc)').then(setSteps)
+    // Fetch Team
+    client.fetch('*[_type == "team"] | order(order asc)').then(setTeam)
+    // Fetch Settings
+    client.fetch('*[_type == "siteSettings"][0]').then(setSettings)
+  }, [])
+
+  const fallbackServices = [
+    { _id: '1', iconName: 'Stethoscope', title: 'Ärztevermittlung', description: 'Passgenaue Vermittlung von Fach- und Führungskräften für Kliniken und Praxen.', link: '/fachkraefte-finden' },
+    { _id: '2', iconName: 'Users', title: 'Pflegepersonal', description: 'Hochqualifizierte Pflegekräfte für Intensiv-, OP- und Allgemeinpflege.', link: '/fachkraefte-finden' },
+    { _id: '3', iconName: 'Globe', title: 'Internationale Fachkräfte', description: 'Wir begleiten internationale Talente vom Sprachkurs bis zur Approbation.', link: '/fachkraefte-finden' },
+  ]
+  const displayServices = services?.length > 0 ? services : fallbackServices
+
+  const fallbackSteps = [
+    { _id: '1', iconName: 'ClipboardCheck', title: 'Bedarfsanalyse', description: 'Wir verstehen Ihre genauen Anforderungen und erstellen ein Profil.' },
+    { _id: '2', iconName: 'Search', title: 'Matching', description: 'Unsere Experten finden die Kandidaten, die fachlich und menschlich passen.' },
+    { _id: '3', iconName: 'BadgeCheck', title: 'Integration', description: 'Wir begleiten den gesamten Onboarding-Prozess für einen reibungslosen Start.' },
+  ]
+  const displaySteps = steps?.length > 0 ? steps : fallbackSteps
+
+  const fallbackTeam = [
+    { _id: '1', name: 'Louis Alwani', role: 'Gründer', bio: 'Visionär und Stratege.', photoLocal: '/nexus-bridge/images/Louis Alwani.jpeg' },
+    { _id: '2', name: 'Sabine Weigand', role: 'Finanz- und Verwaltungsleiterin', bio: 'Das Rückgrat des Unternehmens.', photoLocal: '/nexus-bridge/images/Sabine Weigand.jpeg' },
+    { _id: '3', name: 'Nada Alwani', role: 'Human Resources', bio: 'Expertin für Menschen.', photoLocal: '/nexus-bridge/images/nada alwani.jpeg' },
+    { _id: '4', name: 'Tim Schamel', role: 'Gründer & Arzt', bio: 'Medizinische Exzellenz.', photoLocal: '/nexus-bridge/images/tim.jpeg' },
+    { _id: '5', name: 'Wolfgang Lezuo', role: 'Arzt', bio: 'Medizinische Exzellenz.', photoLocal: '/nexus-bridge/images/Wolfgang.jpeg' },
+  ]
+  const displayTeam = team?.length > 0 ? team : fallbackTeam
 
   return (
     <div className="home">
+      <SEO title={homeData?.seoTitle} description={homeData?.seoDescription} siteSettings={settings} />
 
       {/* ─────────────── HERO ─────────────── */}
       <section className="hero">
@@ -81,51 +107,61 @@ export default function Home() {
             <div className="section-label reveal">Nexusbridge Medical</div>
 
             <h1 className="display-1 hero__headline reveal reveal-delay-1">
-              Medizinische<br />
-              Fachkräfte{' '}
-              <span className="text-accent">weltweit</span>{' '}
-              verfügbar
+              {(() => {
+                const title = hero?.title || 'Medizinische Fachkräfte weltweit verfügbar'
+                const accent = hero?.accentWord || 'weltweit'
+                if (!title.includes(accent)) return title
+                const parts = title.split(accent)
+                return (
+                  <>
+                    {parts[0]}
+                    <span className="text-accent">{accent}</span>
+                    {parts[1]}
+                  </>
+                )
+              })()}
             </h1>
 
             <p className="body-lg hero__sub reveal reveal-delay-2">
-              Wir verbinden qualifizierte Ärzte und Pflegepersonal mit
-              Gesundheitseinrichtungen — schnell, zuverlässig und maßgeschneidert.
+              {hero?.subtitle || 'Wir verbinden qualifizierte Ärzte und Pflegepersonal mit Gesundheitseinrichtungen — schnell, zuverlässig und maßgeschneidert.'}
             </p>
 
             <div className="hero__actions reveal reveal-delay-3">
               <NavLink to="/kontakt" className="btn btn--primary">
-                <Calendar size={18} /> Termin vereinbaren
+                <Calendar size={18} /> {hero?.primaryCta || 'Termin vereinbaren'}
               </NavLink>
               <NavLink to="/fachkraefte-finden" className="btn btn--outline">
-                <Search size={18} /> Fachkräfte finden
+                <Search size={18} /> {hero?.secondaryCta || 'Fachkräfte finden'}
               </NavLink>
             </div>
 
             <div className="hero__stats reveal reveal-delay-4">
-              <div className="hero__stat">
-                <span className="hero__stat-number">100+</span>
-                <span className="hero__stat-label">Vermittlungen</span>
-              </div>
-              <div className="hero__stat">
-                <span className="hero__stat-number">Global</span>
-                <span className="hero__stat-label">Einsatzgebiete</span>
-              </div>
-              <div className="hero__stat">
-                <span className="hero__stat-number">3</span>
-                <span className="hero__stat-label">Kernleistungen</span>
-              </div>
+              {(hero?.stats || [
+                { number: '100+', label: 'Vermittlungen' },
+                { number: 'Global', label: 'Einsatzgebiete' },
+                { number: '3', label: 'Kernleistungen' }
+              ]).map((stat, i) => (
+                <div key={i} className="hero__stat">
+                  <span className="hero__stat-number">{stat.number}</span>
+                  <span className="hero__stat-label">{stat.label}</span>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* RIGHT – image */}
           <div className="hero__image-wrap reveal--right">
             <div className="hero__image-frame">
-              <img src={IMAGES.hero} alt="Medizinisches Fachpersonal" className="hero__image" />
+              <img 
+                src={hero?.heroImage ? urlFor(hero.heroImage).url() : IMAGES.hero} 
+                alt="Medizinisches Fachpersonal" 
+                className="hero__image" 
+              />
 
               {/* Floating Pill 1: Top Left */}
               <div className="hero__float-pill hero__float-pill--top card">
                 <HeartPulse size={16} color="var(--green-500)" />
-                <span>Zertifizierte Fachkräfte</span>
+                <span>{hero?.floatPillTop || 'Zertifizierte Fachkräfte'}</span>
               </div>
 
               {/* Floating Card: Bottom Left */}
@@ -134,7 +170,7 @@ export default function Home() {
                   <Stethoscope size={20} color="var(--green-500)" />
                 </div>
                 <div className="hero__float-text">
-                  <span className="hero__float-title">Orthopädie</span>
+                  <span className="hero__float-title">{hero?.floatCard || 'Orthopädie'}</span>
                   <div className="hero__float-avatars">
                     <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop" alt="Doctor" />
                     <img src="https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop" alt="Doctor" />
@@ -146,7 +182,7 @@ export default function Home() {
               {/* Floating Pill 2: Top Right */}
               <div className="hero__float-pill hero__float-pill--right card">
                 <Globe size={16} color="var(--green-500)" />
-                <span>Internationale Expertise</span>
+                <span>{hero?.floatPillRight || 'Internationale Expertise'}</span>
               </div>
             </div>
           </div>
@@ -160,7 +196,11 @@ export default function Home() {
           {/* Image column */}
           <div className="about-strip__img-col reveal--left">
             <div className="about-strip__img-frame">
-              <img src={IMAGES.about} alt="Modernes Krankenhaus" className="about-strip__img" />
+              <img 
+                src={homeData?.aboutStrip?.image ? urlFor(homeData.aboutStrip.image).url() : IMAGES.about} 
+                alt="Modernes Krankenhaus" 
+                className="about-strip__img" 
+              />
             </div>
             {/* Floating stat */}
             <div className="about-strip__float card">
@@ -174,16 +214,13 @@ export default function Home() {
 
           {/* Text column */}
           <div className="about-strip__text reveal--right">
-            <div className="section-label">Das ist Nexusbridge</div>
+            <div className="section-label">{homeData?.aboutStrip?.subtitle || 'Das ist Nexusbridge'}</div>
             <h2 className="display-3">
-              Ihr Partner im <span className="text-accent">Gesundheitssektor</span>
+              {homeData?.aboutStrip?.title || 'Ihr Partner im Gesundheitssektor'}
             </h2>
             <div className="accent-line" />
             <p className="body-lg about-strip__body">
-              Nexusbridge verbindet medizinische Fachkräfte mit Gesundheitsorganisationen –
-              national und international. Wir platzieren qualifizierte Fachkräfte in Kliniken
-              und bieten Einrichtungen gleichzeitig Zugang zu einem Pool erstklassiger
-              Mitarbeitender.
+              {homeData?.aboutStrip?.text || 'Nexusbridge verbindet medizinische Fachkräfte mit Gesundheitsorganisationen – national und international.'}
             </p>
 
             {/* Feature chips */}
@@ -207,78 +244,28 @@ export default function Home() {
       <section className="bereiche section" id="bereiche">
         <div className="container">
           <div className="bereiche__header reveal">
-            <div className="section-label">Unsere Bereiche</div>
-            <h2 className="display-2">Was wir für Sie tun</h2>
+            <div className="section-label">{homeData?.servicesLabel || 'Unsere Bereiche'}</div>
+            <h2 className="display-2">{homeData?.servicesTitle || 'Was wir für Sie tun'}</h2>
           </div>
 
           <div className="bereiche__grid">
-            {/* Card 1 */}
-            <div className="bereiche__card card reveal reveal-delay-1">
-              <div className="bereiche__card-icon-wrap">
-                <Building2 size={24} color="var(--green-500)" />
-              </div>
-              <h3 className="heading-1 bereiche__card-title">Qualifiziertes Fachpersonal finden</h3>
-              <p className="body-sm bereiche__card-body">
-                Unsere Ärztevermittlung sorgt dafür, dass Sie schnell die ideale medizinische
-                Fachkraft finden – aus einem umfangreichen Pool an Assistenz- und Fachärzten
-                aller Fachbereiche.
-              </p>
-              <NavLink to="/fachkraefte-finden" className="bereiche__card-link">
-                Mehr erfahren <ArrowRight size={14} />
-              </NavLink>
-            </div>
-
-            {/* Card 2 */}
-            <div className="bereiche__card card reveal reveal-delay-2">
-              <div className="bereiche__card-icon-wrap">
-                <Users size={24} color="var(--green-500)" />
-              </div>
-              <h3 className="heading-1 bereiche__card-title">Karriere als Fachkraft</h3>
-              <p className="body-sm bereiche__card-body">
-                Wir begleiten Sie bei Ihrem nächsten Karriereschritt. Durch unser großes
-                Netzwerk bringen wir Sie mit renommierten medizinischen Einrichtungen im
-                Inland und im Ausland in Kontakt.
-              </p>
-              <NavLink to="/flexibel-arbeiten" className="bereiche__card-link">
-                Mehr erfahren <ArrowRight size={14} />
-              </NavLink>
-            </div>
-
-            {/* Card 3 – wide */}
-            <div className="bereiche__card bereiche__card--wide card reveal reveal-delay-3">
-              <div className="bereiche__card-wide-inner">
-                <div className="bereiche__wide-item">
-                  <div className="bereiche__card-icon-wrap">
-                    <ClipboardCheck size={20} color="var(--green-500)" />
-                  </div>
-                  <h3 className="heading-2 bereiche__card-title">Zeitarbeit (ANÜ)</h3>
-                  <p className="body-sm bereiche__card-body">
-                    Wir übernehmen sämtliche Vertragsangelegenheiten, Abrechnungen und
-                    organisatorische Aufgaben für Ihre Einsätze.
-                  </p>
+            {displayServices.map((service, i) => (
+              <div key={service._id || i} className={`bereiche__card card reveal reveal-delay-${i + 1}`}>
+                <div className="bereiche__card-icon-wrap">
+                  {iconMap[service.iconName] || <Building2 size={24} color="var(--green-500)" />}
                 </div>
-                <div className="bereiche__wide-item">
-                  <div className="bereiche__card-icon-wrap">
-                    <Globe size={20} color="var(--green-500)" />
-                  </div>
-                  <h3 className="heading-2 bereiche__card-title">Karriere im Ausland</h3>
-                  <p className="body-sm bereiche__card-body">
-                    Eng vernetzt mit führenden Kliniken weltweit – insbesondere im
-                    arabischen Golf.
-                  </p>
-                </div>
-                <div className="bereiche__wide-item">
-                  <div className="bereiche__card-icon-wrap">
-                    <Stethoscope size={20} color="var(--green-500)" />
-                  </div>
-                  <h3 className="heading-2 bereiche__card-title">Festanstellung</h3>
-                  <p className="body-sm bereiche__card-body">
-                    Wir vermitteln für diverse Einrichtungen und unterstützen bei allen
-                    organisatorischen Aspekten einer dauerhaften Anstellung.
-                  </p>
-                </div>
+                <h3 className="heading-1 bereiche__card-title">{service.title}</h3>
+                <p className="body-sm bereiche__card-body">{service.description}</p>
+                <NavLink to={service.link || '/kontakt'} className="bereiche__card-link">
+                  Mehr erfahren <ArrowRight size={14} />
+                </NavLink>
               </div>
-            </div>
+            ))}
+            
+            {/* Fallback if no services in Sanity yet */}
+            {displayServices.length === 0 && (
+              <p className="body-sm">Lade Leistungen...</p>
+            )}
           </div>
         </div>
       </section>
@@ -289,17 +276,15 @@ export default function Home() {
           <div className="prevention__text reveal--left">
             <div className="section-label">Präventionsmedizin</div>
             <h2 className="display-3">
-              Gesundheit im Unternehmen —{' '}
-              <span className="text-accent">aktiv schützen</span>
+              {homeData?.prevention?.title || 'Gesundheit im Unternehmen —'}{' '}
+              <span className="text-accent">{homeData?.prevention?.subtitle || 'aktiv schützen'}</span>
             </h2>
             <div className="accent-line" />
             <p className="body-lg prevention__body">
-              Wir entsenden qualifizierte Ärzte direkt zu Ihrem Unternehmen. Durch regelmäßige
-              Vorsorgeuntersuchungen Ihrer Mitarbeitenden senken Sie krankheitsbedingte Ausfälle
-              nachhaltig — und zeigen echte Fürsorge für Ihr Team.
+              {homeData?.prevention?.description || 'Wir entsenden qualifizierte Ärzte direkt zu Ihrem Unternehmen. Durch regelmäßige Vorsorgeuntersuchungen Ihrer Mitarbeitenden senken Sie krankheitsbedingte Ausfälle nachhaltig — und zeigen echte Fürsorge für Ihr Team.'}
             </p>
             <ul className="prevention__list">
-              {PREVENTION_POINTS.map((item, i) => (
+              {(homeData?.prevention?.points || PREVENTION_POINTS).map((item, i) => (
                 <li key={i} className="prevention__list-item">
                   <CheckCircle2 size={16} color="var(--green-600)" style={{ flexShrink: 0 }} />
                   <span>{item}</span>
@@ -312,13 +297,17 @@ export default function Home() {
           </div>
           <div className="prevention__visual reveal--right">
             <div className="prevention__img-frame">
-              <img src={IMAGES.prevention} alt="Betriebliche Gesundheitsvorsorge" className="prevention__img" />
+              <img 
+                src={homeData?.prevention?.image ? urlFor(homeData.prevention.image).url() : IMAGES.prevention} 
+                alt="Betriebliche Gesundheitsvorsorge" 
+                className="prevention__img" 
+              />
             </div>
             <div className="prevention__stat card">
               <Activity size={22} color="var(--green-600)" />
               <div>
-                <p className="prevention__stat-num">−30%</p>
-                <p className="prevention__stat-sub">weniger Krankheitsausfälle</p>
+                <p className="prevention__stat-num">{homeData?.prevention?.statNumber || '−30%'}</p>
+                <p className="prevention__stat-sub">{homeData?.prevention?.statLabel || 'weniger Krankheitsausfälle'}</p>
               </div>
             </div>
           </div>
@@ -329,39 +318,30 @@ export default function Home() {
       <section className="process section">
         <div className="container">
           <div className="process__header reveal">
-            <div className="section-label">So arbeiten wir zusammen</div>
+            <div className="section-label">{homeData?.processLabel || 'So arbeiten wir zusammen'}</div>
             <h2 className="display-2">
-              In drei Schritten <span className="text-accent">zum Ziel</span>
+              {(() => {
+                const title = homeData?.processTitle || 'In drei Schritten zum Ziel'
+                // Optional: you can extract an accent word from homeData as well if desired,
+                // but for now let's just make the whole thing the title. 
+                // Or if it contains 'zum Ziel', we can highlight it:
+                if (title.includes('zum Ziel')) {
+                  const parts = title.split('zum Ziel')
+                  return <>{parts[0]}<span className="text-accent">zum Ziel</span>{parts[1]}</>
+                }
+                return title
+              })()}
             </h2>
           </div>
 
           <div className="process__steps">
-            {[
-              {
-                num: '01',
-                icon: <ClipboardCheck size={24} color="var(--green-500)" />,
-                title: 'Registrierung',
-                body: 'Über unser Kontaktformular registrieren Sie sich unverbindlich als medizinische Fachkraft oder Einrichtung.',
-              },
-              {
-                num: '02',
-                icon: <Users size={24} color="var(--green-500)" />,
-                title: 'Erstgespräch',
-                body: 'Wir laden Sie zu einem ersten Gespräch ein und besprechen Informationen, Anforderungen und erarbeiten passgenaue Vorschläge.',
-              },
-              {
-                num: '03',
-                icon: <BadgeCheck size={24} color="var(--green-500)" />,
-                title: 'Beratung',
-                body: 'Gemeinsam besprechen wir die verfügbaren Optionen und beraten Sie bei der richtigen Auswahl für eine nachhaltige Zusammenarbeit.',
-              },
-            ].map((s, i) => (
-              <div key={i} className={`process__step card reveal reveal-delay-${i + 1}`}>
+            {displaySteps.map((s, i) => (
+              <div key={s._id || i} className={`process__step card reveal reveal-delay-${i + 1}`}>
                 <div className="process__step-icon-wrap">
-                  {s.icon}
+                  {iconMap[s.iconName] || <ClipboardCheck size={24} color="var(--green-500)" />}
                 </div>
                 <h3 className="heading-1 process__step-title">{s.title}</h3>
-                <p className="body-sm process__step-body">{s.body}</p>
+                <p className="body-sm process__step-body">{s.description}</p>
               </div>
             ))}
           </div>
@@ -372,16 +352,40 @@ export default function Home() {
       <section className="team-section section">
         <div className="container">
           <div className="team-section__header reveal">
-            <div className="section-label">Unser Team</div>
+            <div className="section-label">{homeData?.teamLabel || 'Unser Team'}</div>
             <h2 className="display-2">
-              Die Menschen hinter <span className="text-accent">Nexusbridge</span>
+              {(() => {
+                const title = homeData?.teamTitle || 'Die Menschen hinter Nexusbridge'
+                if (title.includes('Nexusbridge')) {
+                  const parts = title.split('Nexusbridge')
+                  return <>{parts[0]}<span className="text-accent">Nexusbridge</span>{parts[1]}</>
+                }
+                return title
+              })()}
             </h2>
           </div>
           <div className="team-section__grid">
-            {TEAM.map((member, i) => (
-              <div key={i} className={`team-card reveal reveal-delay-${i + 1}`}>
+            {displayTeam.map((member, i) => (
+              <div key={member._id || i} className={`team-card reveal reveal-delay-${i + 1}`}>
                 <div className="team-card__photo-wrap">
-                  <img src={member.photo} alt={member.name} className="team-card__photo" />
+                  <img 
+                    src={(() => {
+                      if (member.photo) return urlFor(member.photo).width(400).height(500).url();
+                      if (member.photoLocal) return member.photoLocal;
+                      
+                      // Local fallback mapping by name
+                      const name = member.name?.toLowerCase() || '';
+                      if (name.includes('louis')) return '/nexus-bridge/images/Louis Alwani.jpeg';
+                      if (name.includes('sabine')) return '/nexus-bridge/images/Sabine Weigand.jpeg';
+                      if (name.includes('nada')) return '/nexus-bridge/images/nada alwani.jpeg';
+                      if (name.includes('wolfgang')) return '/nexus-bridge/images/Wolfgang.jpeg';
+                      if (name.includes('tim')) return '/nexus-bridge/images/tim.jpeg';
+                      
+                      return 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop';
+                    })()} 
+                    alt={member.name} 
+                    className="team-card__photo" 
+                  />
                 </div>
                 <div className="team-card__info">
                   <h3 className="team-card__name">{member.name}</h3>
@@ -406,12 +410,16 @@ export default function Home() {
           <div className="cta-strip__inner reveal">
             <div className="cta-strip__bg" />
             <div className="cta-strip__text">
-              <div className="section-label" style={{ background: 'var(--white)', color: 'var(--green-700)', boxShadow: 'var(--shadow-sm)' }}>Bereit loszulegen?</div>
-              <h2 className="display-3" style={{ color: 'var(--white)' }}>Finden Sie genau das, was Sie suchen.</h2>
+              <div className="section-label" style={{ background: 'var(--white)', color: 'var(--green-700)', boxShadow: 'var(--shadow-sm)' }}>
+                {homeData?.cta?.label || 'Bereit loszulegen?'}
+              </div>
+              <h2 className="display-3" style={{ color: 'var(--white)' }}>
+                {homeData?.cta?.title || 'Finden Sie genau das, was Sie suchen.'}
+              </h2>
             </div>
             <div className="cta-strip__actions">
               <NavLink to="/kontakt" className="btn btn--outline" style={{ background: 'var(--white)', border: 'none', boxShadow: 'var(--shadow-sm)' }}>
-                Jetzt Kontakt aufnehmen
+                {homeData?.cta?.buttonText || 'Jetzt Kontakt aufnehmen'}
               </NavLink>
             </div>
           </div>

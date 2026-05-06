@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import { client, urlFor } from '../lib/sanity'
 import './Navbar.css'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [navData, setNavData] = useState(null)
+  const [logoUrl, setLogoUrl] = useState(null)
   const location = useLocation()
+
+  useEffect(() => {
+    client.fetch('*[_type == "navigation"][0]').then(setNavData)
+    client.fetch('*[_type == "siteSettings"][0]').then(res => {
+      if (res?.logo) setLogoUrl(urlFor(res.logo).url())
+    })
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,13 +37,14 @@ export default function Navbar() {
     document.body.style.overflow = !menuOpen ? 'hidden' : 'auto'
   }
 
-  const links = [
+  const defaultLinks = [
     { to: '/', label: 'Home' },
     { to: '/fachkraefte-finden', label: 'Fachkräfte finden' },
     { to: '/flexibel-arbeiten', label: 'Flexibel arbeiten' },
     { to: '/ueber-uns', label: 'Über uns' },
     { to: '/kontakt', label: 'Kontakt' },
   ]
+  const links = navData?.mainNav || defaultLinks
 
   return (
     <>
@@ -41,7 +52,7 @@ export default function Navbar() {
         <div className="container navbar__inner">
           
           <NavLink to="/" className="navbar__brand">
-            <img src="images/image-160x109.png" alt="Nexusbridge Medical Logo" className="navbar__logo" />
+            <img src={logoUrl || "images/image-160x109.png"} alt="Nexusbridge Medical Logo" className="navbar__logo" />
           </NavLink>
 
           <div className="navbar__desktop">
@@ -61,7 +72,7 @@ export default function Navbar() {
             </ul>
             <div className="navbar__actions">
               <NavLink to="/kontakt" className="btn btn--primary">
-                Jetzt kontaktieren
+                {navData?.navCta || 'Jetzt kontaktieren'}
               </NavLink>
             </div>
           </div>
@@ -91,7 +102,7 @@ export default function Navbar() {
           </ul>
           <div className="mobile-menu__footer">
             <NavLink to="/kontakt" className="btn btn--primary" style={{ width: '100%', justifyContent: 'center' }}>
-              Jetzt kontaktieren
+              {navData?.navCta || 'Jetzt kontaktieren'}
             </NavLink>
           </div>
         </div>

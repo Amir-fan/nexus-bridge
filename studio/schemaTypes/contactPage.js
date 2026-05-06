@@ -1,0 +1,23 @@
+export default {
+  name: 'contactPage',
+  title: 'Seite: Kontakt',
+  type: 'document',
+  fields: [
+    { name: 'heroTitle', title: 'Hero Titel', type: 'string' },
+    { name: 'heroSubtitle', title: 'Hero Untertitel', type: 'text' },
+    { name: 'accentWord', title: 'Grünes Wort im Titel', type: 'string' },
+    { name: 'contactSectionLabel', title: 'Kontakt Abschnitt Label', type: 'string' },
+    { name: 'contactSectionTitle', title: 'Kontakt Abschnitt Titel', type: 'string' },
+    { name: 'formTitle', title: 'Formular Titel', type: 'string' },
+    { name: 'formSuccessTitle', title: 'Formular Erfolgsmeldung Titel', type: 'string' },
+    { name: 'formSuccessMessage', title: 'Formular Erfolgsmeldung Text', type: 'text' },
+    { name: 'placeholderName', title: 'Platzhalter: Name', type: 'string' },
+    { name: 'placeholderEmail', title: 'Platzhalter: E-Mail', type: 'string' },
+    { name: 'placeholderPhone', title: 'Platzhalter: Telefon', type: 'string' },
+    { name: 'placeholderMessage', title: 'Platzhalter: Nachricht', type: 'string' },
+    { name: 'submitButtonText', title: 'Button Text: Senden', type: 'string' },
+    { name: 'web3formsKey', title: 'Web3Forms Access Key', type: 'string', description: 'Holen Sie sich Ihren Schlüssel auf web3forms.com' },
+    { name: 'seoTitle', title: 'SEO Titel', type: 'string' },
+    { name: 'seoDescription', title: 'SEO Beschreibung', type: 'text' },
+  ],
+}

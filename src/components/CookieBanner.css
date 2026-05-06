@@ -1,0 +1,145 @@
+.cookie-banner {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+  background: var(--white);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-lg);
+  z-index: 1000;
+  padding: 1.5rem;
+  animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cookie-banner__inner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.cookie-banner__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 900px;
+}
+
+.cookie-banner__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  color: var(--green-900);
+}
+
+.cookie-banner__text {
+  color: var(--silver-600);
+  line-height: 1.6;
+}
+
+.cookie-banner__policy-link {
+  text-decoration: underline;
+}
+
+.cookie-banner__preferences {
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.cookie-toggle {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--light-bg);
+}
+
+.cookie-toggle__label {
+  display: block;
+  font-weight: 700;
+  color: var(--green-900);
+  margin-bottom: 0.25rem;
+}
+
+.cookie-toggle__text {
+  color: var(--silver-500);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.cookie-toggle input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.25rem;
+}
+
+.cookie-banner__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 180px;
+}
+
+.cookie-manage-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 999;
+  border: 1px solid var(--color-border);
+  background: var(--white);
+  color: var(--green-900);
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.8rem;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.cookie-manage-button:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.btn--sm {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.875rem;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .cookie-banner {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .cookie-banner__inner {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cookie-banner__actions {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .cookie-banner__actions .btn {
+    width: 100%;
+  }
+}
